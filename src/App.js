@@ -1,23 +1,48 @@
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
+import { Container, Card, CardBody, CardTitle, Button, CardText, Row, Col } from 'reactstrap';
+  import {loadStripe} from '@stripe/stripe-js';
+
+  loadStripe(process.env.REACT_APP_API_STRIPE_PUBLISHABLE_API_KEY)
+    .then(stripe => {
+      console.log('Stripe loaded', stripe);
+    })
+    .catch(e => {
+      console.log('Failed to load Stripe', e);
+    });
+
+const products = [{
+  title: '商品1',
+  description: '商品説明文',
+  price: 100,
+}, {
+  title: '商品2',
+  description: '商品説明文',
+  price: 150,
+}, {
+  title: '商品3',
+  description: '商品説明文',
+  price: 200,
+}]
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Container>
+        <Row md="3">
+          {products.map((product, i) => (
+            <Col key={i}>
+              <Card>
+                <CardBody>
+                  <CardTitle>{product.title}</CardTitle>
+                  <CardText>{product.description}</CardText>
+                  <Button>注文する ({product.price} 円)</Button>
+                </CardBody>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
     </div>
   );
 }
